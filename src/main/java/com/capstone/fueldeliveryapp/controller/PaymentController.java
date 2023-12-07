@@ -49,6 +49,9 @@ public class PaymentController {
             RazorpayClient razorpayClient = new RazorpayClient("rzp_test_YANFvEeCNTFaQ2", "jUd3lsdhOUcA4usJ29vpjvss");
             JSONObject paymentLinkReq = new JSONObject();
             Double totalAmount = order.getTotalAmount();
+            System.out.println(totalAmount);
+            totalAmount = Math.round(totalAmount * 100.0) / 100.0;
+            System.out.println(totalAmount);
             paymentLinkReq.put("amount", totalAmount*100); // totalAmount(in rupees) * 100 = in paise
             paymentLinkReq.put("currency", "INR");
             JSONObject customerDetails = new JSONObject();

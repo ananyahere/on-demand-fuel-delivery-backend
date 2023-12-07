@@ -23,9 +23,10 @@ public class Order {
     private List<FuelItem> orderItems;
     private List<FuelItemDetails> orderItemsWithDetails;
     private String deliveryOtp;
+    private Date deliveryTime;
     public Order() {}
 
-    public Order(String orderId, String userId, Address deliveryLoc, String orderStatus, Double totalAmount, Boolean isImmediate, Date orderTime, Date scheduledTime, List<FuelItem> orderItems) {
+    public Order(String orderId, String userId, Address deliveryLoc, String orderStatus, Double totalAmount, Boolean isImmediate, Date orderTime, Date scheduledTime, List<FuelItem> orderItems, Date deliveryTime) {
         this.orderId = orderId;
         this.userId = userId;
         this.deliveryLoc = deliveryLoc;
@@ -35,6 +36,7 @@ public class Order {
         this.orderTime = orderTime;
         this.scheduledTime = scheduledTime;
         this.orderItems = orderItems;
+        this.deliveryTime = deliveryTime;
     }
 
     public String getOrderId() {
@@ -121,6 +123,14 @@ public class Order {
 
     public void setOrderItemsWithDetails(List<FuelItemDetails> orderItemsWithDetails) { this.orderItemsWithDetails = orderItemsWithDetails; }
 
+    public Date getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(Date deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -134,6 +144,8 @@ public class Order {
                 ", scheduledTime=" + scheduledTime +
                 ", orderItems=" + orderItems +
                 ", orderItemsWithDetails=" + orderItemsWithDetails +
+                ", deliveryOtp='" + deliveryOtp + '\'' +
+                ", deliveryTime=" + deliveryTime +
                 '}';
     }
 }

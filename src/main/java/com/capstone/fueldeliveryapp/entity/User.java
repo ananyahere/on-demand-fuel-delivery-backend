@@ -18,8 +18,14 @@ public class User {
     private List<Vehicle> vehicles;
     private List<String> paymentMethods;
 
-    public User(String email) {
+//    public User(String email) {
+//        this.email = email;
+//    }
+
+    public User(String email, List<String> paymentMethods, String name){
         this.email = email;
+        this.paymentMethods = paymentMethods;
+        this.name = name;
     }
 
     public String getUserId() {

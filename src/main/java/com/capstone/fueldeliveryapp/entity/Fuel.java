@@ -13,19 +13,19 @@ public class Fuel {
     private String fuelType;
     private Number fuelStock;
     private String fuelStockUnit;
-    private List<Supplier> fuelSuppliers;
+    private Supplier fuelSupplier;
     private Number basePriceHyd;
     private Number basePriceBlr;
     private Number basePriceBhu;
 
     public Fuel() {}
 
-    public Fuel(String fuelId, String fuelType, Number fuelStock, String fuelStockUnit, List<Supplier> fuelSuppliers, Number basePriceHyd, Number basePriceBlr, Number basePriceBhu) {
+    public Fuel(String fuelId, String fuelType, Number fuelStock, String fuelStockUnit, Supplier fuelSupplier, Number basePriceHyd, Number basePriceBlr, Number basePriceBhu) {
         this.fuelId = fuelId;
         this.fuelType = fuelType;
         this.fuelStock = fuelStock;
         this.fuelStockUnit = fuelStockUnit;
-        this.fuelSuppliers = fuelSuppliers;
+        this.fuelSupplier = fuelSupplier;
         this.basePriceHyd = basePriceHyd;
         this.basePriceBlr = basePriceBlr;
         this.basePriceBhu = basePriceBhu;
@@ -38,7 +38,7 @@ public class Fuel {
                 ", fuelType='" + fuelType + '\'' +
                 ", fuelStock=" + fuelStock +
                 ", fuelStockUnit='" + fuelStockUnit + '\'' +
-                ", fuelSuppliers=" + fuelSuppliers +
+                ", fuelSupplier=" + fuelSupplier +
                 ", basePriceHyd=" + basePriceHyd +
                 ", basePriceBlr=" + basePriceBlr +
                 ", basePriceBhu=" + basePriceBhu +
@@ -77,12 +77,12 @@ public class Fuel {
         this.fuelStockUnit = fuelStockUnit;
     }
 
-    public List<Supplier> getFuelSuppliers() {
-        return fuelSuppliers;
+    public Supplier getFuelSupplier() {
+        return fuelSupplier;
     }
 
-    public void setFuelSuppliers(List<Supplier> fuelSuppliers) {
-        this.fuelSuppliers = fuelSuppliers;
+    public void setFuelSupplier(Supplier fuelSupplier) {
+        this.fuelSupplier = fuelSupplier;
     }
 
     public Number getBasePriceHyd() {

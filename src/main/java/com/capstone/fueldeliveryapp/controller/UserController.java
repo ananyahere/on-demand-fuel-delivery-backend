@@ -92,6 +92,13 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    // update user's address
+    @PutMapping("/{userId}/addresses/{addressId}")
+    public ResponseEntity<User> updateAddress(@PathVariable String userId, @PathVariable String addressId, @RequestBody Address updatedAddress){
+        User user = userService.updateAddress(userId, addressId, updatedAddress);
+        if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 
 
     @ExceptionHandler

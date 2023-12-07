@@ -5,7 +5,8 @@ public class Address{
     private String type;
     private String receiver;
     private String location;
-
+    private String city;
+    private String phone;
     public String getAddressId() {
         return addressId;
     }
@@ -38,6 +39,22 @@ public class Address{
         this.location = location;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     @Override
     public String toString() {
         return "Address{" +
@@ -45,6 +62,8 @@ public class Address{
                 ", type='" + type + '\'' +
                 ", receiver='" + receiver + '\'' +
                 ", location='" + location + '\'' +
+                ", city='" + city + '\'' +
+                ", phone='" + phone + '\'' +
                 '}';
     }
 }

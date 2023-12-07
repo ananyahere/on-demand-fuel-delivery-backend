@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +88,19 @@ public class OrderController {
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("status", isMatch);
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
+    }
+
+    @GetMapping("/latest-order/{userId}")
+    public ResponseEntity<Date> getLatestOrderTime(@PathVariable String userId){
+        Date latestTime = orderService.getLatestOrderTime(userId);
+        if(latestTime == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(latestTime, HttpStatus.OK);
+    }
+
+    @GetMapping("/insights")
+    public ResponseEntity<Map<String, Map<String, Integer>>> getInsights(){
+        Map<String, Map<String, Integer>> insights = orderService.getInsights();
+        return new ResponseEntity<>(insights, HttpStatus.OK);
     }
 
     @ExceptionHandler

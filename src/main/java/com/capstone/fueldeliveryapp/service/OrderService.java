@@ -8,7 +8,6 @@ import com.capstone.fueldeliveryapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 @Service
@@ -41,7 +40,6 @@ public class OrderService {
         if (order.getOrderItems() == null || order.getOrderItems().isEmpty()) {
             throw new IllegalArgumentException("OrderItems cannot be null or empty.");
         }
-
         for (FuelItem fuelItem : order.getOrderItems()) {
             if (fuelItem.getFuelQuantity().intValue() <= 0) {
                 throw new IllegalArgumentException("FuelQuantity must be greater than zero.");
@@ -50,7 +48,6 @@ public class OrderService {
             Fuel fuel = fuelRepository.findById(fuelItem.getFuelTypeId()).get();
             int newFuelStock = fuel.getFuelStock().intValue() - fuelItem.getFuelQuantity().intValue();
             fuel.setFuelStock(newFuelStock);
-            System.out.println(fuel);
             fuelRepository.save(fuel);
         }
         order.setOrderStatus("Confirmed");
@@ -121,10 +118,6 @@ public class OrderService {
         for(FuelItem fuelItem: orderItems){
             String fuelId = fuelItem.getFuelTypeId();
             Fuel fuel = fuelRepository.findById(fuelId).orElse(null);
-            // add fuel details feild dynamically to fuel
-//            Field field = FuelItem.class.getDeclaredField("fuelDetail");
-//            field.setAccessible(true);
-//            field.set(fuelItem, fuel);
             // create a new FuelItemDetails object with fuel details
             FuelItemDetails itemWithDetails  = new FuelItemDetails(fuelItem.getFuelItemId(), fuelItem.getFuelTypeId(), (Integer) fuelItem.getFuelQuantity(), fuel, fuelItem.getFuelUnit());
             orderItemsWithDetails.add(itemWithDetails);
@@ -166,6 +159,64 @@ public class OrderService {
         // update order status
         order.setOrderStatus(orderStatus);
         return orderRepository.save(order);
+    }
+
+    public Date getLatestOrderTime(String userId) {
+        // First, retrieve all orders for the user from the database
+        List<Order> userOrders = orderRepository.findOrderByUserId(userId);
+        // If there are no orders, return null
+        if (userOrders.isEmpty()) return null;
+        // Sort the orders by order time in descending order
+        userOrders.sort(Comparator.comparing(Order::getOrderTime).reversed());
+        // Return the order time of the latest order
+        return userOrders.get(0).getOrderTime();
+    }
+
+    public Map<String, Map<String, Integer>> getInsights() {
+        List<Order> orders = orderRepository.findAll();
+        Map<String, Integer> totalOrderedFuels = new HashMap<>();
+        Map<String, Integer> fuelLeftInStock = new HashMap<>();
+
+        for(Order order: orders){
+            List<FuelItem> orderItems = order.getOrderItems();
+
+            for(FuelItem orderItem: orderItems){
+                String fuelTypeId = orderItem.getFuelTypeId();
+                // get details of fuel
+                Optional<Fuel> fuelFound = fuelRepository.findById(fuelTypeId); // check this
+                Fuel fuel = fuelFound.get();
+                // check if fuel exist
+                String fuelType = fuel.getFuelType();
+                int fuelQuantity = orderItem.getFuelQuantity();
+                Number fuelLeft = fuel.getFuelStock().intValue();
+
+                if(fuelLeftInStock.containsKey(fuelType)){
+                    fuelLeftInStock.put(fuelType, fuelLeftInStock.get(fuelType) + fuelLeft.intValue());
+                } else {
+                    fuelLeftInStock.put(fuelType, fuelLeft.intValue());
+                }
+
+                if(totalOrderedFuels.containsKey(fuelType)) {
+                    totalOrderedFuels.put(fuelType, totalOrderedFuels.get(fuelType) + fuelQuantity);
+                } else {
+                    totalOrderedFuels.put(fuelType, fuelQuantity);
+                }
+            }
+        }
+        System.out.println(totalOrderedFuels);
+        System.out.println(fuelLeftInStock);
+        Map<String, Map<String, Integer>> fuelOrderedAndStock = new HashMap<>();
+        for(String fuelType: totalOrderedFuels.keySet()){
+            int fuelOrdered = totalOrderedFuels.get(fuelType);
+            int fuelInStock = fuelLeftInStock.get(fuelType);
+
+            Map<String, Integer> fuelInfo = new HashMap<>();
+            fuelInfo.put("fuelOrdered", fuelOrdered);
+            fuelInfo.put("fuelInStock", fuelInStock);
+
+            fuelOrderedAndStock.put(fuelType, fuelInfo);
+        }
+        return fuelOrderedAndStock;
     }
 
     // Helper method to generate a unique order ID (using UUID for simplicity)

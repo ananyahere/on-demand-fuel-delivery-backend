@@ -28,6 +28,38 @@ public class FuelService {
         return fuelRepository.save(fuel);
     }
 
+    // Function to edit a fuel
+    public Fuel editFuel(String fuelId, Fuel updatedFuel) {
+        Optional<Fuel> fuelOptional = fuelRepository.findById(fuelId);
+        if (fuelOptional.isEmpty()) {
+            return null;
+        }
+        Fuel fuel = fuelOptional.get();
+        // Update fields that were modified in the updatedFuel
+        if (updatedFuel.getFuelType() != null) {
+            fuel.setFuelType(updatedFuel.getFuelType());
+        }
+        if (updatedFuel.getFuelStock() != null) {
+            fuel.setFuelStock(updatedFuel.getFuelStock());
+        }
+        if (updatedFuel.getFuelStockUnit() != null) {
+            fuel.setFuelStockUnit(updatedFuel.getFuelStockUnit());
+        }
+        if (updatedFuel.getFuelSupplier() != null) {
+            fuel.setFuelSupplier(updatedFuel.getFuelSupplier());
+        }
+        if (updatedFuel.getBasePriceHyd() != null) {
+            fuel.setBasePriceHyd(updatedFuel.getBasePriceHyd());
+        }
+        if (updatedFuel.getBasePriceBlr() != null) {
+            fuel.setBasePriceBlr(updatedFuel.getBasePriceBlr());
+        }
+        if (updatedFuel.getBasePriceBhu() != null) {
+            fuel.setBasePriceBhu(updatedFuel.getBasePriceBhu());
+        }
+        return fuelRepository.save(fuel);
+    }
+
     // Function to delete a fuel by Id
     public boolean deleteFuelById(String fuelId) {
         Optional<Fuel> optionalFuel = fuelRepository.findById(fuelId);

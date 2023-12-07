@@ -1,30 +1,39 @@
 package com.capstone.fueldeliveryapp.entity;
 
 public class Supplier{
-    private String supplierName;
-    private String supplierContactNo;
+    private String name;
+    private String contact;
+    private String email;
 
-    public Supplier() {
+    public Supplier() {}
+
+    public Supplier(String name, String contact, String email) {
+        this.name = name;
+        this.contact = contact;
+        this.email = email;
     }
 
-    public Supplier(String supplierName, String supplierContactNo) {
-        this.supplierName = supplierName;
-        this.supplierContactNo = supplierContactNo;
+    public String getName() {
+        return name;
     }
 
-    public String getSupplierName() {
-        return supplierName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public String getContact() {
+        return contact;
     }
 
-    public String getSupplierContactNo() {
-        return supplierContactNo;
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
-    public void setSupplierContactNo(String supplierContactNo) {
-        this.supplierContactNo = supplierContactNo;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

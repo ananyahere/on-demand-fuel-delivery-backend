@@ -65,12 +65,7 @@ public class UserService {
         List<Address> addresses = user.getAddresses();
         // If the address object has an ID, find and replace the existing address with the new one
         if (addresses != null && address.getAddressId() != null && !address.getAddressId().isEmpty()) {
-            for (int i = 0; i < addresses.size(); i++) {
-                if (addresses.get(i).getAddressId()!=null && addresses.get(i).getAddressId().equals(address.getAddressId())) {
-                    addresses.set(i, address);
-                    break;
-                }
-            }
+            addresses.add(address);
         }
         // Otherwise, generate a new ID and add the address to the list
         else {
@@ -78,13 +73,9 @@ public class UserService {
             if(addresses != null) addressSize = addresses.size();
             String addressId = address.getAddressId();
             if(addressId == null) addressId = String.valueOf(addressSize + 1);
-            System.out.println(addressId);
-            System.out.println(address);
             address.setAddressId(addressId);
             if(addresses == null) addresses = new ArrayList<>();
-            System.out.println(addresses);
             addresses.add(address);
-            System.out.println(addresses);
         }
         user.setAddresses(addresses);
         System.out.println(user);
@@ -127,12 +118,7 @@ public class UserService {
 
         // If the vehicle object has an ID, find and replace the existing vehicle with the new one
         if (vehicles != null && vehicle.getVehicleId() != null && !vehicle.getVehicleId().isEmpty()) {
-            for (int i = 0; i < vehicles.size(); i++) {
-                if (vehicles.get(i).getVehicleId().equals(vehicle.getVehicleId())) {
-                    vehicles.set(i, vehicle);
-                    break;
-                }
-            }
+            vehicles.add(vehicle);
         }
         // Otherwise, generate a new ID and add the vehicle to the list
         else {
@@ -188,8 +174,30 @@ public class UserService {
     }
 
     // Create user with email
-    public User createUserWithEmail(String email){
-        User user = new User(email);
+    public User createUserWithEmail(String email, List<String> paymentMethods, String name){
+        User user = new User(email, paymentMethods, name);
+        return userRepository.save(user);
+    }
+
+    public User updateAddress(String userId, String addressId, Address updatedAddress){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+        Address addressToUpdate = null;
+        for(Address address: user.getAddresses()) {
+            if(address.getAddressId().equals(addressId)){
+                addressToUpdate = address;
+                break;
+            }
+        }
+        if (addressToUpdate == null) {
+            throw new ResourceNotFoundException("Address not found with id: " + addressId);
+        }
+        if(updatedAddress.getLocation() != null) addressToUpdate.setLocation(updatedAddress.getLocation());
+        if(updatedAddress.getReceiver() != null) addressToUpdate.setReceiver(updatedAddress.getReceiver());
+        if(updatedAddress.getType() != null) addressToUpdate.setType(updatedAddress.getType());
+        if(updatedAddress.getCity() != null) addressToUpdate.setCity(updatedAddress.getCity());
+        if(updatedAddress.getPhone() != null) addressToUpdate.setPhone(updatedAddress.getPhone());
+
         return userRepository.save(user);
     }
 

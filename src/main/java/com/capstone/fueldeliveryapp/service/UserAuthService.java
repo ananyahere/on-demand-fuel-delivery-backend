@@ -31,15 +31,14 @@ public class UserAuthService {
         userAuth.setUserPassword(getEncodedPassword(userAuth.getUserPassword()));
         // create & save user
         String userEmail = userAuth.getUserEmail();
-        User user = userService.createUserWithEmail(userEmail);
+        List<String> paymentMethods = new ArrayList<>();
+        paymentMethods.add("Credit Card");
+        String name = "user-" + generateUserId();
+        User user = userService.createUserWithEmail(userEmail, paymentMethods, name);
         // get mongo-id of user
         String userId = user.getUserId();
         // set mongo-id to user-auth
         userAuth.setUserId(userId);
-        List<String> paymentMethods = new ArrayList<>();
-        paymentMethods.add("Credit Card");
-        user.setName("Default-User");
-        user.setPaymentMethods(paymentMethods);
         return userAuthRepository.save(userAuth);
     }
 
@@ -77,5 +76,10 @@ public class UserAuthService {
     public String getUserCatchPhase(String username) {
         UserAuth userAuth = getUserByUsername(username);
         return userAuth.getCatchPhase();
+    }
+
+    // Helper method to generate a unique order ID (using UUID for simplicity)
+    private String generateUserId() {
+        return UUID.randomUUID().toString().substring(0,4);
     }
 }

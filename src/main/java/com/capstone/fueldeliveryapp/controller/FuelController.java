@@ -59,4 +59,11 @@ public class FuelController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/{fuelId}")
+    public ResponseEntity<Fuel> updateFuel(@PathVariable String fuelId, @RequestBody Fuel updateFuel){
+        Fuel fuel = fuelService.editFuel(fuelId, updateFuel);
+        if(fuel == null) return new ResponseEntity<>(fuel, HttpStatus.NOT_FOUND);
+        else return new ResponseEntity<>(fuel, HttpStatus.OK);
+    }
 }
