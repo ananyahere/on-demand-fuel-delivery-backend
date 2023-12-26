@@ -133,7 +133,7 @@ public class PaymentController {
             JSONArray lineItems = new JSONArray();
             List<FuelItemDetails> orderItemsWithDetails = order.getOrderItemsWithDetails();
             for (FuelItemDetails item: orderItemsWithDetails){
-                double fuelAmount = item.getFuelQuantity().intValue() * item.getFuelDetail().getBasePriceHyd().intValue() * 100;
+                double fuelAmount = item.getFuelDetail().getBasePriceHyd().intValue() * 100;
                 String fuelName = item.getFuelDetail().getFuelId() + " - " + item.getFuelDetail().getFuelType();
                 String fuelDesc = "x" + item.getFuelQuantity().toString() + " " +item.getFuelDetail().getFuelStockUnit();
                 JSONObject lineItem = new JSONObject();

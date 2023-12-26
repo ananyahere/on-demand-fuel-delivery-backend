@@ -29,6 +29,7 @@ public class UserAuthService {
         roles.add(role);
         userAuth.setRole(roles);
         userAuth.setUserPassword(getEncodedPassword(userAuth.getUserPassword()));
+        if(userAuth.getCatchPhase() == null) userAuth.setCatchPhase("test-catch-phase");
         // create & save user
         String userEmail = userAuth.getUserEmail();
         List<String> paymentMethods = new ArrayList<>();
@@ -39,6 +40,7 @@ public class UserAuthService {
         String userId = user.getUserId();
         // set mongo-id to user-auth
         userAuth.setUserId(userId);
+        // save user-auth
         return userAuthRepository.save(userAuth);
     }
 

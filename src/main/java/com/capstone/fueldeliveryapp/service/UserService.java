@@ -138,7 +138,6 @@ public class UserService {
     public User updateUser(String userId, User userDetails) throws ResourceNotFoundException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
-        System.out.println("in updateUser service");
         if(userDetails.getName() != null) user.setName(userDetails.getName());
         if(userDetails.getEmail() != null)  user.setEmail(userDetails.getEmail());
         if(userDetails.getAddresses() != null) user.setAddresses(userDetails.getAddresses());

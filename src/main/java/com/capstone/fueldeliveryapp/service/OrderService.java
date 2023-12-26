@@ -179,11 +179,11 @@ public class OrderService {
 
         for(Order order: orders){
             List<FuelItem> orderItems = order.getOrderItems();
-
             for(FuelItem orderItem: orderItems){
                 String fuelTypeId = orderItem.getFuelTypeId();
                 // get details of fuel
-                Optional<Fuel> fuelFound = fuelRepository.findById(fuelTypeId); // check this
+                Optional<Fuel> fuelFound = fuelRepository.findById(fuelTypeId);
+                if(fuelFound.isEmpty()) break;
                 Fuel fuel = fuelFound.get();
                 // check if fuel exist
                 String fuelType = fuel.getFuelType();
